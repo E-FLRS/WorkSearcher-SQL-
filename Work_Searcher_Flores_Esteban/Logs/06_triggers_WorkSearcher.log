@@ -1,0 +1,141 @@
+SQL> @.\06_triggers_WorkSearcher.sql;
+SQL> ﻿-- ====================================================================
+SP2-0734: unknown command beginning "﻿-- ====..." - rest of line ignored.
+SQL> -- Script : 06_triggers_WorkSearcher.sql
+SQL> -- Objet  : Cr�ation des triggers WorkSearcher sur SGBD Oracle en Local (XE)
+SQL> --
+SQL> -- Mise � jour des versions
+SQL> -- Version   Date	    Commentaires
+SQL> -- -----	--------    ------------------------------------------
+SQL> -- 1.0	 14.05.2023    Cr�ation trigers
+SQL> -- ====================================================================
+SQL> 
+SQL> -- ====================================================
+SQL> -- Trigger insertion personne
+SQL> -- ====================================================
+SQL> 
+SQL> DROP SEQUENCE sq_personne;
+DROP SEQUENCE sq_personne
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+SQL> 
+SQL> CREATE SEQUENCE   sq_personne  MINVALUE 13 NOMAXVALUE INCREMENT BY 1
+  2  /
+
+Sequence created.
+
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER	trg_personne_id
+  2    BEFORE insert on wor_personne
+  3    for each row
+  4  begin
+  5  	    :NEW.per_id := sq_personne.NEXTVAL;
+  6  end;
+  7  
+  8  /
+
+Trigger created.
+
+SQL> ALTER TRIGGER  trg_personne_id ENABLE
+  2  /
+
+Trigger altered.
+
+SQL> 
+SQL> -- ====================================================
+SQL> -- Trigger insertion emploi
+SQL> -- ====================================================
+SQL> DROP SEQUENCE sq_emploi;
+DROP SEQUENCE sq_emploi
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+SQL> 
+SQL> CREATE SEQUENCE sq_emploi MINVALUE 25 NOMAXVALUE INCREMENT BY 1;
+
+Sequence created.
+
+SQL> /
+CREATE SEQUENCE sq_emploi MINVALUE 25 NOMAXVALUE INCREMENT BY 1
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> CREATE OR REPLACE TRIGGER	trg_emploi_id
+  2    BEFORE insert on wor_emploi
+  3    for each row
+  4  begin
+  5  	    :NEW.emp_id := sq_emploi.NEXTVAL;
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> ALTER TRIGGER  trg_emploi_id ENABLE;
+
+Trigger altered.
+
+SQL> /
+
+Trigger altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> -- ====================================================
+SQL> -- Trigger insertion entreprise
+SQL> -- ====================================================
+SQL> DROP SEQUENCE sq_entreprise;
+DROP SEQUENCE sq_entreprise
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+SQL> CREATE SEQUENCE sq_entreprise MINVALUE 16 NOMAXVALUE INCREMENT BY 1;
+
+Sequence created.
+
+SQL> 
+SQL> /
+CREATE SEQUENCE sq_entreprise MINVALUE 16 NOMAXVALUE INCREMENT BY 1
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> CREATE OR REPLACE TRIGGER	trg_entreprise_id
+  2    BEFORE insert on wor_entreprise
+  3    for each row
+  4  begin
+  5  	    :NEW.ent_id := sq_entreprise.NEXTVAL;
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> ALTER TRIGGER  trg_entreprise_id ENABLE;
+
+Trigger altered.
+
+SQL> /
+
+Trigger altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> SPOOL OFF

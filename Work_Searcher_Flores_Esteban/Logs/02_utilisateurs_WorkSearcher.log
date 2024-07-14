@@ -1,0 +1,141 @@
+SQL> @.\02_utilisateurs_WorkSearcher.sql
+SQL> -- ====================================================================
+SQL> -- Script : 02_utilisateurs_WorkSearcher.sql
+SQL> -- Objet  : Cr�ation des utilisateurs BDD WorkSearcher sur SGBD Oracle en Local (XE)
+SQL> --
+SQL> -- Mise � jour des versions
+SQL> -- Version     Date      Commentaires
+SQL> -- -----	  --------    ------------------------------------------
+SQL> -- 1.0	 14.05.20223   Cr�ation utilisateurs
+SQL> -- ====================================================================
+SQL> -- =============================================================================================
+SQL> -- Suppression des r�les, utilisateurs et profil
+SQL> -- =============================================================================================
+SQL> -- Suppression des utilisateurs
+SQL> DROP USER WorkSearcher_data CASCADE;
+
+User dropped.
+
+SQL> DROP USER WorkSearcher_user CASCADE;
+
+User dropped.
+
+SQL> 
+SQL> -- Suppression des r�les
+SQL> DROP ROLE role_WorkSearcher_data CASCADE;
+
+Role dropped.
+
+SQL> DROP ROLE role_WorkSearcher_user CASCADE;
+
+Role dropped.
+
+SQL> 
+SQL> -- Suppression du profil
+SQL> DROP PROFILE WorkSearcher_profil;
+
+Profile dropped.
+
+SQL> 
+SQL> -- =============================================================================================
+SQL> -- Cr�ation du profil
+SQL> -- =============================================================================================
+SQL> -- Creation du profil WorkSearcher_profil
+SQL> CREATE PROFILE WorkSearcher_profil LIMIT
+  2  	     SESSIONS_PER_USER 3
+  3  	     FAILED_LOGIN_ATTEMPTS 3
+  4  	     PASSWORD_LOCK_TIME 1/24
+  5  	     PASSWORD_LIFE_TIME 180
+  6  	     PASSWORD_REUSE_TIME 180
+  7  	     PASSWORD_REUSE_MAX UNLIMITED
+  8  	     PASSWORD_GRACE_TIME 7;
+
+Profile created.
+
+SQL> 
+SQL> -- =============================================================================================
+SQL> -- Cr�ation du r�le role_WorkSearcher_data (r�le de l'utilisateur propri�taire des objets de la base)
+SQL> -- =============================================================================================
+SQL> -- Creation du r�le role_WorkSearcher_data
+SQL> CREATE ROLE role_WorkSearcher_data;
+
+Role created.
+
+SQL> 
+SQL> -- droit de se connecter � la BDD
+SQL> GRANT CONNECT TO role_WorkSearcher_data;
+
+Grant succeeded.
+
+SQL> 
+SQL> -- droit de cr�er des triggers, s�quence, tables, packages, ...
+SQL> GRANT RESOURCE TO role_WorkSearcher_data;
+
+Grant succeeded.
+
+SQL> 
+SQL> -- droit de cr�er des vues
+SQL> GRANT CREATE VIEW TO role_WorkSearcher_data;
+
+Grant succeeded.
+
+SQL> 
+SQL> -- droit de cr�er des synonymes
+SQL> GRANT CREATE ANY SYNONYM TO role_WorkSearcher_data;
+
+Grant succeeded.
+
+SQL> 
+SQL> 
+SQL> -- ===============================
+SQL> -- Cr�ation du r�le role_WorkSearcher_user (r�le de l'utilisateur de l'application)
+SQL> -- ===============================
+SQL> -- Creation du r�le role_WorkSearcher_user
+SQL> CREATE ROLE role_WorkSearcher_user;
+
+Role created.
+
+SQL> 
+SQL> -- droit de se connecter � la BDD
+SQL> GRANT CREATE SESSION TO role_WorkSearcher_user;
+
+Grant succeeded.
+
+SQL> 
+SQL> -- ===================================
+SQL> -- Cr�ation de l'utilisateur WorkSearcher_data (propri�taire des objets de sch�ma de la base)
+SQL> -- ===================================
+SQL> -- Creation de l'utilisateur WorkSearcher_data
+SQL> CREATE USER WorkSearcher_data
+  2  	     PROFILE WorkSearcher_profil
+  3  	     IDENTIFIED BY WorkSearcher_data
+  4  	     DEFAULT TABLESPACE USERS
+  5  	     TEMPORARY TABLESPACE TEMP
+  6  ;
+
+User created.
+
+SQL> GRANT role_WorkSearcher_data TO WorkSearcher_data;
+
+Grant succeeded.
+
+SQL> ALTER USER WorkSearcher_data quota unlimited ON USERS;
+
+User altered.
+
+SQL> 
+SQL> --===================================
+SQL> --Cr�ation de l'utilisateur WorkSearcher_user (utilisateur de l'application)
+SQL> --===================================
+SQL> CREATE USER WorkSearcher_user
+  2  	     PROFILE WorkSearcher_profil
+  3  	     IDENTIFIED BY WorkSearcher_user
+  4  ;
+
+User created.
+
+SQL> GRANT role_WorkSearcher_user TO WorkSearcher_user;
+
+Grant succeeded.
+
+SQL> SPOOL OFF

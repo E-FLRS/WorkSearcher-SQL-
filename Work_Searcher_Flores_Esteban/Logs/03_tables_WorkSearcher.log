@@ -1,0 +1,708 @@
+SQL> @.\03_tables_WorkSearcher.sql
+SQL> ﻿-- -----------------------------------------------------------------------------
+> --		 G�n�ration d'une base de donn�es pour
+SP2-0734: unknown command beginning "﻿-- ----..." - rest of line ignored.
+SQL> -- 		     Oracle Version 10g
+SQL> -- 		       (24/4/2023 15:53:15)
+SQL> -- -----------------------------------------------------------------------------
+SQL> --      Nom de la base : MLR5
+SQL> --      Projet : Espace de travail
+SQL> --      Auteur : Flores
+SQL> --      Date de derni�re modification : 24/4/2023 15:53:05
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> DROP TABLE WOR_DIPLOME CASCADE CONSTRAINTS;
+DROP TABLE WOR_DIPLOME CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_ENTREPRISE CASCADE CONSTRAINTS;
+DROP TABLE WOR_ENTREPRISE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_EMPLOI CASCADE CONSTRAINTS;
+DROP TABLE WOR_EMPLOI CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_PERSONNE CASCADE CONSTRAINTS;
+DROP TABLE WOR_PERSONNE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_VILLE CASCADE CONSTRAINTS;
+DROP TABLE WOR_VILLE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_LANGUE CASCADE CONSTRAINTS;
+DROP TABLE WOR_LANGUE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_COMPETENCE CASCADE CONSTRAINTS;
+DROP TABLE WOR_COMPETENCE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_EXPERIENCEPRO CASCADE CONSTRAINTS;
+DROP TABLE WOR_EXPERIENCEPRO CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_TYPE CASCADE CONSTRAINTS;
+DROP TABLE WOR_TYPE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_LANGUE_PERSONNE CASCADE CONSTRAINTS;
+DROP TABLE WOR_LANGUE_PERSONNE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_COMPETENCE_EMPLOI CASCADE CONSTRAINTS;
+DROP TABLE WOR_COMPETENCE_EMPLOI CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_DIPLOME_PERSONNE CASCADE CONSTRAINTS;
+DROP TABLE WOR_DIPLOME_PERSONNE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TABLE WOR_COMPETENCE_PERSONNE CASCADE CONSTRAINTS;
+DROP TABLE WOR_COMPETENCE_PERSONNE CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> DROP TRIGGER trg_personne_id;
+DROP TRIGGER trg_personne_id
+*
+ERROR at line 1:
+ORA-04080: trigger 'TRG_PERSONNE_ID' does not exist 
+
+
+SQL> DROP TRIGGER trg_emploi_id;
+DROP TRIGGER trg_emploi_id
+*
+ERROR at line 1:
+ORA-04080: trigger 'TRG_EMPLOI_ID' does not exist 
+
+
+SQL> DROP TRIGGER trg_entreprise_id;
+DROP TRIGGER trg_entreprise_id
+*
+ERROR at line 1:
+ORA-04080: trigger 'TRG_ENTREPRISE_ID' does not exist 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_DIPLOME
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_DIPLOME
+  2  	(
+  3  	 DIP_ID NUMBER(5)  NOT NULL,
+  4  	 DIP_NOM VARCHAR2(50)  NOT NULL
+  5  ,	 CONSTRAINT PK_WOR_DIPLOME PRIMARY KEY (DIP_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : wor_VILLE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE wor_VILLE
+  2  	(
+  3  	 VIL_ID NUMBER(5)  NOT NULL,
+  4  	 VIL_NOM VARCHAR2(50) NOT NULL,
+  5  	 VIL_PAYS VARCHAR2(32)	NOT NULL
+  6  ,	 CONSTRAINT PK_wor_VILLE PRIMARY KEY (VIL_ID)
+  7  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_VILLE.VIL_ID
+  2  	  IS 'id de la ville';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_VILLE.VIL_NOM
+  2  	  IS 'nom de la ville';
+
+Comment created.
+
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_EMPLOI
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_EMPLOI
+  2  	(
+  3  	 EMP_ID NUMBER(5)  NOT NULL,
+  4  	 EMP_TYP_ID NUMBER(5)  NOT NULL,
+  5  	 EMP_ENT_ID NUMBER(5)  NOT NULL,
+  6  	 EMP_PER_ID NUMBER(5)  NULL,
+  7  	 EMP_NOM VARCHAR2(50)  NOT NULL,
+  8  	 EMP_DATEDEBUT DATE  NOT NULL,
+  9  	 EMP_DATEFIN DATE  NULL,
+ 10  	 EMP_COMMENTAIREPERSONNE VARCHAR2(50)  NULL,
+ 11  	 EMP_NOTEPERSONNE NUMBER(5)  NULL,
+ 12  	 EMP_COMMENTAIREENTREPRISE VARCHAR2(50)  NULL,
+ 13  	 EMP_NOTEENTREPRISE NUMBER(5)  NULL,
+ 14  	 EMP_CONDITION VARCHAR2(50)  NULL,
+ 15  	 EMP_CRITERE VARCHAR2(50)  NULL
+ 16  ,	 CONSTRAINT PK_WOR_EMPLOI PRIMARY KEY (EMP_ID)
+ 17  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_ID
+  2  	  IS 'id du travail';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_ENT_ID
+  2  	  IS 'id de l''entreprise';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_NOM
+  2  	  IS 'nom du travail';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_DATEDEBUT
+  2  	  IS 'date du d�but de l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_DATEFIN
+  2  	  IS 'date de fin de l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_COMMENTAIREPERSONNE
+  2  	  IS 'Commentaire sur la personne qui occupe l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_NOTEPERSONNE
+  2  	  IS 'Note sur la personne qui occupe l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_COMMENTAIREENTREPRISE
+  2  	  IS 'commentaire sur l''entreprise qui propose l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_NOTEENTREPRISE
+  2  	  IS 'note sur l''entreprise qui propose l''emploi';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_CONDITION
+  2  	  IS 'Condition de l''emploi (�tre passion�, travailler les week-end...)';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EMPLOI.EMP_CRITERE
+  2  	  IS 'crit�re pour l''emploi (diplome...)';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_PERSONNE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_PERSONNE
+  2  	(
+  3  	 PER_ID NUMBER(5)  NOT NULL,
+  4  	 PER_NOM VARCHAR2(50)  NULL,
+  5  	 PER_PRENOM VARCHAR2(50)  NULL,
+  6  	 PER_DATENAISSANCE DATE  NULL,
+  7  	 PER_SEXE VARCHAR2(50)	NULL,
+  8  	 PER_DESCRIPTION VARCHAR2(50)  NULL,
+  9  	 PER_ROLE VARCHAR2(50)	NULL,
+ 10  	 PER_USERNAME VARCHAR2(50)  NULL,
+ 11  	 PER_PASSWORD VARCHAR2(50)  NULL,
+ 12  	 PER_EMAIL VARCHAR2(50)  NULL,
+ 13  	 PER_ADRESSE VARCHAR2(50)  NULL,
+ 14  	 PER_TELEPHONE VARCHAR2(50)  NULL,
+ 15  	 PER_NATIONALITE VARCHAR2(50)  NULL
+ 16  ,	 CONSTRAINT PK_WOR_PERSONNE PRIMARY KEY (PER_ID)
+ 17  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_NOM
+  2  	  IS 'C''est le nom de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_PRENOM
+  2  	  IS 'c''est le prenom de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_DATENAISSANCE
+  2  	  IS 'c''est l''age de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_SEXE
+  2  	  IS 'c''est le sexe de la personne (homme ou femme)';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_PERSONNE.PER_DESCRIPTION
+  2  	  IS 'Description de la personne, son profil';
+
+Comment created.
+
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : wor_TYPE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE wor_TYPE
+  2  	(
+  3  	 TYP_ID NUMBER(5)  NOT NULL,
+  4  	 TYP_NOM VARCHAR2(50)  NOT NULL
+  5  ,	 CONSTRAINT PK_wor_TYPE PRIMARY KEY (TYP_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : wor_COMPETENCE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE wor_COMPETENCE
+  2  	(
+  3  	 COM_ID NUMBER(5)  NOT NULL,
+  4  	 COM_NOM VARCHAR2(50)  NOT NULL
+  5  ,	 CONSTRAINT PK_wor_COMPETENCE PRIMARY KEY (COM_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_COMPETENCE.COM_ID
+  2  	  IS 'id de la competence';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_COMPETENCE.COM_NOM
+  2  	  IS 'nom de la comp�tence';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_LANGUE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_LANGUE
+  2  	(
+  3  	 LAN_ID  NUMBER(5)  NOT NULL,
+  4  	 LAN_NOM VARCHAR2(50)  NOT NULL
+  5  ,	 CONSTRAINT PK_WOR_LANGUE PRIMARY KEY (LAN_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : wor_ENTREPRISE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE wor_ENTREPRISE
+  2  	(
+  3  	 ENT_ID NUMBER(5)  NOT NULL,
+  4  	 ENT_VIL_ID NUMBER(5)  NOT NULL,
+  5  	 ENT_NOM VARCHAR2(50)  NOT NULL,
+  6  	 ENT_TYPE VARCHAR2(50)	NULL
+  7  ,	 CONSTRAINT PK_wor_ENTREPRISE PRIMARY KEY (ENT_ID)
+  8  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_ENTREPRISE.ENT_ID
+  2  	  IS 'id de l''entreprise';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_ENTREPRISE.ENT_VIL_ID
+  2  	  IS 'id de la ville';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_ENTREPRISE.ENT_NOM
+  2  	  IS 'nom de l''entreprise';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN wor_ENTREPRISE.ENT_TYPE
+  2  	  IS 'type de l''entreprise';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_EXPERIENCEPRO
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_EXPERIENCEPRO
+  2  	(
+  3  	 EXP_ID NUMBER(5)  NOT NULL,
+  4  	 EXP_PER_ID NUMBER(5)  NOT NULL,
+  5  	 EXP_NOM VARCHAR2(50)  NOT NULL,
+  6  	 EXP_DATEDEBUT DATE  NOT NULL,
+  7  	 EXP_DATEFIN DATE  NOT NULL
+  8  ,	 CONSTRAINT PK_WOR_EXPERIENCEPRO PRIMARY KEY (EXP_ID)
+  9  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_EXPERIENCEPRO.EXP_PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_LANGUE_PERSONNE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_LANGUE_PERSONNE
+  2  	(
+  3  	 LP_LAN_ID NUMBER(5)  NOT NULL,
+  4  	 LP_PER_ID NUMBER(5)  NOT NULL
+  5  ,	 CONSTRAINT PK_WOR_LANGUE_PERSONNE PRIMARY KEY (LP_LAN_ID, LP_PER_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_LANGUE_PERSONNE.LP_PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_COMPETENCE_EMPLOI
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_COMPETENCE_EMPLOI
+  2  	(
+  3  	 CE_COM_ID NUMBER(5)  NOT NULL,
+  4  	 CE_TRA_ID NUMBER(5)  NOT NULL,
+  5  	 CE_TRA_NIVEAUREQUIS VARCHAR2(50)  NULL,
+  6  	 CE_TRA_EXPERIENCEREQUISE VARCHAR2(50)	NULL
+  7  ,	 CONSTRAINT PK_WOR_COMPETENCE_EMPLOI PRIMARY KEY (CE_COM_ID, CE_TRA_ID)
+  8  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_EMPLOI.CE_COM_ID
+  2  	  IS 'id de la competence';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_EMPLOI.CE_TRA_ID
+  2  	  IS 'id du travail';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_EMPLOI.CE_TRA_NIVEAUREQUIS
+  2  	  IS 'Niveau que le travail exige pour la comp�tence';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_EMPLOI.CE_TRA_EXPERIENCEREQUISE
+  2  	  IS 'niveau d''exprience que le poste requiere';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_DIPLOME_PERSONNE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_DIPLOME_PERSONNE
+  2  	(
+  3  	 DP_DIP_ID NUMBER(5)  NOT NULL,
+  4  	 DP_PER_ID NUMBER(5)  NOT NULL
+  5  ,	 CONSTRAINT PK_WOR_DIPLOME_PERSONNE PRIMARY KEY (DP_DIP_ID, DP_PER_ID)
+  6  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_DIPLOME_PERSONNE.DP_PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       TABLE : WOR_COMPETENCE_PERSONNE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE WOR_COMPETENCE_PERSONNE
+  2  	(
+  3  	 CP_COM_ID NUMBER(5)  NOT NULL,
+  4  	 CP_PER_ID NUMBER(5)  NOT NULL,
+  5  	 CP_NIVEAU NUMBER(5)  NOT NULL,
+  6  	 CP_DATEDEBUTEXPERIENCE DATE  NOT NULL
+  7  ,	 CONSTRAINT PK_WOR_COMPETENCE_PERSONNE PRIMARY KEY (CP_COM_ID, CP_PER_ID)
+  8  	) ;
+
+Table created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_PERSONNE.CP_COM_ID
+  2  	  IS 'id de la competence';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_PERSONNE.CP_PER_ID
+  2  	  IS 'Ceci est l''id de la personne';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_PERSONNE.CP_NIVEAU
+  2  	  IS 'c''est le niveau que la personne a de cette comp�tence';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN WOR_COMPETENCE_PERSONNE.CP_DATEDEBUTEXPERIENCE
+  2  	  IS 'date depuis quand la personne a atteind le niveau de la comp�tence';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> --       CREATION DES REFERENCES DE TABLE
+SQL> -- -----------------------------------------------------------------------------
+SQL> 
+SQL> 
+SQL> ALTER TABLE WOR_ENTREPRISE ADD (
+  2  	  CONSTRAINT FK_WOR_ENTREPRISE_WOR_VILLE
+  3  	       FOREIGN KEY (ENT_VIL_ID)
+  4  		    REFERENCES WOR_VILLE (VIL_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_EMPLOI ADD (
+  2  	  CONSTRAINT FK_WOR_EMPLOI_WOR_ENTREPRISE
+  3  	       FOREIGN KEY (EMP_ENT_ID)
+  4  		    REFERENCES WOR_ENTREPRISE (ENT_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_EMPLOI ADD (
+  2  	  CONSTRAINT FK_WOR_EMPLOI_WOR_TYPE
+  3  	       FOREIGN KEY (EMP_TYP_ID)
+  4  		    REFERENCES WOR_TYPE (TYP_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_EMPLOI ADD (
+  2  	  CONSTRAINT FK_WOR_EMPLOI_WOR_PERSONNE
+  3  	       FOREIGN KEY (EMP_PER_ID)
+  4  		    REFERENCES WOR_PERSONNE (PER_ID))	;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_EXPERIENCEPRO ADD (
+  2  	  CONSTRAINT FK_WOR_EXPERIENCEPRO_WOR_PERSO
+  3  	       FOREIGN KEY (EXP_PER_ID)
+  4  		    REFERENCES WOR_PERSONNE (PER_ID))	;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_LANGUE_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_LANGUE_PERSONNE_WOR_LAN
+  3  	       FOREIGN KEY (LP_LAN_ID)
+  4  		    REFERENCES WOR_LANGUE (LAN_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_LANGUE_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_LANGUE_PERSONNE_WOR_PER
+  3  	       FOREIGN KEY (LP_PER_ID)
+  4  		    REFERENCES WOR_PERSONNE (PER_ID))	;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_COMPETENCE_EMPLOI ADD (
+  2  	  CONSTRAINT FK_WOR_COMPETENCE_EMPLOI_WOR_C
+  3  	       FOREIGN KEY (CE_COM_ID)
+  4  		    REFERENCES WOR_COMPETENCE (COM_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_COMPETENCE_EMPLOI ADD (
+  2  	  CONSTRAINT FK_WOR_COMPETENCE_EMPLOI_WOR_E
+  3  	       FOREIGN KEY (CE_TRA_ID)
+  4  		    REFERENCES WOR_EMPLOI (EMP_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_DIPLOME_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_DIPLOME_PERSONNE_WOR_DI
+  3  	       FOREIGN KEY (DP_DIP_ID)
+  4  		    REFERENCES WOR_DIPLOME (DIP_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_DIPLOME_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_DIPLOME_PERSONNE_WOR_PE
+  3  	       FOREIGN KEY (DP_PER_ID)
+  4  		    REFERENCES WOR_PERSONNE (PER_ID))	;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_COMPETENCE_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_COMPETENCE_PERSONNE_WOR
+  3  	       FOREIGN KEY (CP_COM_ID)
+  4  		    REFERENCES WOR_COMPETENCE (COM_ID))   ;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE WOR_COMPETENCE_PERSONNE ADD (
+  2  	  CONSTRAINT FK_WOR_COMPETENCE_PERSONNE_WO1
+  3  	       FOREIGN KEY (CP_PER_ID)
+  4  		    REFERENCES WOR_PERSONNE (PER_ID))	;
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> -- -----------------------------------------------------------------------------
+SQL> -- 	       FIN DE GENERATION
+SQL> -- -----------------------------------------------------------------------------
+SQL> SPOOL OFF

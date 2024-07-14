@@ -1,0 +1,46 @@
+SQL> @.\08_synonymes_WorkSearcher.sql;
+SQL> -- ======================================================================
+SQL> --  Script: 08_synonymes_WorkSearcher.sql
+SQL> --  Objet : Cr�ation des synonymes de la base WorkSearcher
+SQL> -- ======================================================================
+SQL> 
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.vw_particulier FOR WorkSearcher_data.vw_particulier;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.vw_emploi_fini FOR WorkSearcher_data.vw_emploi_fini;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.vw_emploi_enRecherche FOR WorkSearcher_data.vw_emploi_enRecherche;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.vw_emploi_personne FOR WorkSearcher_data.vw_emploi_personne;
+
+Synonym created.
+
+SQL> 
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.pkg_update_personne FOR WorkSearcher_data.pkg_update_personne;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.pkg_classement_personne FOR WorkSearcher_data.pkg_classement_personne;
+
+Synonym created.
+
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.sq_personne FOR WorkSearcher_data.sq_personne;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.sq_emploi FOR WorkSearcher_data.sq_emploi;
+
+Synonym created.
+
+SQL> CREATE OR REPLACE SYNONYM WorkSearcher_user.sq_entreprise FOR WorkSearcher_data.sq_entreprise;
+
+Synonym created.
+
+SQL> SPOOL OFF

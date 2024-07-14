@@ -1,0 +1,138 @@
+SQL> @.\07_package_WorkSearcher.sql;
+SQL> -- ======================================================================
+SQL> --  Script: 07_Package_WorkSearcher.sql
+SQL> --  Objet : Cr�ation des packages de la base WorkSearcher
+SQL> -- ======================================================================
+SQL> 
+SQL> create or replace package pkg_classement_personne is
+  2  
+  3    PROCEDURE affichageClassement;
+  4    FUNCTION get_positionPersonne(i_id IN VARCHAR)RETURN INTEGER;
+  5  
+  6  end pkg_classement_personne;
+  7  
+  8  /
+
+Package created.
+
+SQL> 
+SQL> create or replace package body pkg_classement_personne is
+  2  
+  3  FUNCTION get_positionPersonne(i_id IN VARCHAR)RETURN INTEGER AS
+  4  
+  5    v_cpt INTEGER;
+  6  
+  7  CURSOR c_classementP IS SELECT per_id,per_nom, per_prenom, AVG(emp_notepersonne) FROM wor_emploi
+  8  JOIN wor_personne ON per_id = emp_per_id
+  9  WHERE  emp_datefin IS NOT NULL GROUP BY per_id, per_nom, per_prenom
+ 10  ORDER BY AVG(emp_notepersonne)DESC;
+ 11  
+ 12  
+ 13    BEGIN
+ 14  	 v_cpt := 0;
+ 15  	 FOR v_p IN c_classementP LOOP
+ 16  	   v_cpt := v_cpt + 1;
+ 17  	   IF i_id = v_p.per_id THEN
+ 18  	     RETURN v_cpt;
+ 19  	   END IF;
+ 20  	 END LOOP;
+ 21  
+ 22    END get_positionPersonne;
+ 23  
+ 24  
+ 25  PROCEDURE affichageClassement AS
+ 26  
+ 27  CURSOR c_classementP IS SELECT per_id,per_nom, per_prenom, AVG(emp_notepersonne) AS moyenne FROM wor_emploi
+ 28  JOIN wor_personne ON per_id = emp_per_id
+ 29  WHERE  emp_datefin IS NOT NULL GROUP BY per_id, per_nom, per_prenom
+ 30  ORDER BY AVG(emp_notepersonne)DESC;
+ 31  
+ 32  
+ 33  
+ 34  BEGIN
+ 35  
+ 36    FOR v_p IN c_classementP LOOP
+ 37  
+ 38  	 dbms_output.put_line(v_p.per_nom || ' ' || v_p.per_prenom || ' est num�ro ' || get_positionPersonne(v_p.per_id) ||
+ 39  	 ' du classement avec un moyenne de : ' || v_p.moyenne);
+ 40    END LOOP;
+ 41  END affichageClassement;
+ 42  
+ 43  
+ 44  
+ 45  
+ 46  end pkg_classement_personne;
+ 47  
+ 48  
+ 49  
+ 50  
+ 51  /
+
+Package body created.
+
+SQL> 
+SQL> 
+SQL> GRANT EXECUTE ON pkg_classement_personne TO role_worksearcher_user;
+
+Grant succeeded.
+
+SQL> 
+SQL> /
+
+Grant succeeded.
+
+SQL> 
+SQL> create or replace package pkg_update_personne is
+  2  
+  3  FUNCTION get_Personne_id(i_pseudo IN VARCHAR)RETURN INTEGER;
+  4  PROCEDURE updatePersonne(i_address IN VARCHAR, i_mail IN VARCHAR, i_nationalite IN VARCHAR, i_phone IN VARCHAR
+  5  	      ,i_desc IN VARCHAR,  i_pseudo IN VARCHAR);
+  6  
+  7  end pkg_update_personne;
+  8  /
+
+Package created.
+
+SQL> create or replace package body pkg_update_personne is
+  2  
+  3  
+  4  FUNCTION get_Personne_id(i_pseudo IN VARCHAR)RETURN INTEGER AS
+  5    v_id INTEGER;
+  6    BEGIN
+  7  	 SELECT per_id INTO v_id FROM wor_personne WHERE per_username = i_pseudo;
+  8  	 RETURN v_id;
+  9  
+ 10    END get_Personne_id;
+ 11  
+ 12  
+ 13  
+ 14  PROCEDURE updatePersonne(i_address IN VARCHAR, i_mail IN VARCHAR, i_nationalite IN VARCHAR, i_phone IN VARCHAR
+ 15  	      ,i_desc IN VARCHAR,  i_pseudo IN VARCHAR) AS
+ 16  
+ 17  v_id_pers INTEGER;
+ 18  
+ 19  BEGIN
+ 20  
+ 21    v_id_pers := get_Personne_id(i_pseudo);
+ 22  
+ 23    UPDATE wor_personne SET per_adresse = i_address, per_email = i_mail, per_nationalite = i_nationalite,
+ 24    per_telephone = i_phone, per_description = i_desc WHERE per_id = v_id_pers;
+ 25  
+ 26  
+ 27  END updatePersonne;
+ 28  
+ 29  
+ 30  
+ 31  end pkg_update_personne;
+ 32  /
+
+Package body created.
+
+SQL> GRANT EXECUTE ON pkg_update_personne TO role_worksearcher_user;
+
+Grant succeeded.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> SPOOL OFF
